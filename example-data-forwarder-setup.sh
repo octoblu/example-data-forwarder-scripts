@@ -33,7 +33,14 @@ FORWARDER_TOKEN=$(cat ./tmp/forwarder-meshblu.json | jq -r '.token')
 echo "forwarder is: $FORWARDER_UUID"
 
 echo "adding webhook to forwarder"
-meshblu-util create-hook -t received -U $SERVICE_URL ./tmp/forwarder-meshblu.json
+meshblu-util create-hook -t message.received -U $SERVICE_URL ./tmp/forwarder-meshblu.json
 
 echo "adding forwarder to Endoskeleton's message.received whitelist"
 meshblu-util update -p -d "{\"\$addToSet\": {\"meshblu.whitelists.message.received\": {\"uuid\": \"$FORWARDER_UUID\"}}}" ./tmp/endoskeleton-meshblu.json
+
+
+echo "Subscribing Forwarder to it's own messages"
+meshblu-util subscription-create -e $FORWARDER_UUID -s $FORWARDER_UUID -t message.received ./tmp/forwarder-meshblu.json
+
+echo "Subscribing Forwarder to Endoskeleton's received messages"
+meshblu-util subscription-create -e $ENDOSKELETON_UUID -s $FORWARDER_UUID -t message.received ./tmp/forwarder-meshblu.json
