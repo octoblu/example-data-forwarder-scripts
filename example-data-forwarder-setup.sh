@@ -12,15 +12,15 @@ mkdir ./tmp
 
 echo "creating Endoskeleton device"
 meshblu-util register -d '{"type": "endoskeleton"}' > ./tmp/endoskeleton-meshblu.json
-ENDOSKELETON_UUID=$(cat ./tmp/endoskeleton-meshblu.json | jq -r '.uuid')
-ENDOSKELETON_TOKEN=$(cat ./tmp/endoskeleton-meshblu.json | jq -r '.token')
+ENDOSKELETON_UUID=$(jq -r '.uuid' < ./tmp/endoskeleton-meshblu.json)
+ENDOSKELETON_TOKEN=$(jq -r '.token' < ./tmp/endoskeleton-meshblu.json)
 echo "endoskeleton is: $ENDOSKELETON_UUID"
 
 
 echo "creating Doorbell device"
 meshblu-util register -d '{"type": "doorbell"}' > ./tmp/doorbell-meshblu.json
-DOORBELL_UUID=$(cat ./tmp/doorbell-meshblu.json | jq -r '.uuid')
-DOORBELL_TOKEN=$(cat ./tmp/doorbell-meshblu.json | jq -r '.token')
+DOORBELL_UUID=$(jq -r '.uuid' < ./tmp/doorbell-meshblu.json)
+DOORBELL_TOKEN=$(jq -r '.token' < ./tmp/doorbell-meshblu.json)
 echo "doorbell is: $DOORBELL_UUID"
 
 echo "adding Doorbell to Endoskeleton's message.from whitelist"
@@ -28,8 +28,8 @@ meshblu-util update -p -d "{\"\$addToSet\": {\"meshblu.whitelists.message.from\"
 
 echo "creating Forwarder device"
 meshblu-util register -d '{"type": "forwarder"}' > ./tmp/forwarder-meshblu.json
-FORWARDER_UUID=$(cat ./tmp/forwarder-meshblu.json | jq -r '.uuid')
-FORWARDER_TOKEN=$(cat ./tmp/forwarder-meshblu.json | jq -r '.token')
+FORWARDER_UUID=$(jq -r '.uuid' < ./tmp/forwarder-meshblu.json)
+FORWARDER_TOKEN=$(jq -r '.token' < ./tmp/forwarder-meshblu.json)
 echo "forwarder is: $FORWARDER_UUID"
 
 echo "adding webhook to forwarder"
